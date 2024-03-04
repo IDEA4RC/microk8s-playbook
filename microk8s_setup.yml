@@ -1,0 +1,101 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+  gather_facts: true
+
+  tasks:
+
+    - name: disable UFW
+      ufw:
+        state: disabled
+
+    - name: Install microk8s with option --classic
+      snap:
+        name: microk8s
+        classic: yes
+        channel: "1.28"
+
+    - name: Add current user to the microk8s group
+      user:
+        name: "{{ ansible_facts['env']['SUDO_USER'] }}"
+        group: microk8s
+        append: yes
+
+    - name: Reset connection so that group changes are in effect
+      meta: reset_connection
+
+    - name: determine if ~/.kube exists
+      stat:
+        path: "{{ ansible_facts['env']['HOME'] }}/.kube"
+      register: out
+
+    - name: update ownership of ~/.kube
+      file:
+        path: "{{ ansible_facts['env']['HOME'] }}/.kube"
+        owner: "{{ ansible_facts['env']['SUDO_USER'] }}"
+        group: microk8s
+      when: out.stat.exists == true
+
+    - name: wait for the microk8s cluster to be ready
+      shell:
+        "microk8s status --wait-ready"
+      retries: 10
+      delay: 6
+      register: out
+      until: out.stdout_lines | regex_search("microk8s is running") != ""
+
+    - name: enable microk8s community repo
+      shell:
+        "microk8s.enable community"
+
+    - name: enable istio
+      shell:
+        "microk8s.enable istio"
+
+    - name: enable helm
+      shell:
+        "microk8s.enable helm"
+
+    - name: enable prometheus
+      shell:
+        "microk8s.kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/prometheus.yaml"
+
+    - name: enable kiali
+      shell:
+        "microk8s.kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.19/samples/addons/kiali.yaml"
+
+     #users can leverage lb_vip_address to specify a desired VIP address
+     #otherwise the playbook will use the default IPv4 address of the VM
+     #for eg:
+     #ansible-playbook -vv  -i ./inventory microk8s_setup.yml --extra-vars "lb_vip_address=172.28.128.74"
+     #this playbook assumes we're going to need one VIP only
+    - name: enable MetalLB
+       shell:
+         "microk8s.enable metallb:{{ lb_vip_address | default(ansible_default_ipv4.address) }}/32"
+ 
+    - name: install Docker
+      package:
+        name:
+          - docker.io
+        state: present
+
+    - name: Add current user to the docker group
+      user:
+        name: "{{ ansible_facts['env']['SUDO_USER'] }}"
+        group: docker
+        append: yes
+
+    - name: Reset connection so that group changes are in effect
+      meta: reset_connection
+
+    - name: install Python3
+      package:
+        name:
+          - python3
+        state: present
+ 
+    - name: install Vantage6 in a virtualenv
+      ansible.builtin.pip:
+        name: vantage6
+        virtualenv: /opt/vantage6
