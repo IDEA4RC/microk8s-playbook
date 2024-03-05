@@ -19,7 +19,7 @@ ssh-copy-id ubuntu@new-capsule
 
 add remote user to sudoers, then disconnect:
 ```
-sudo usermod -aG adm ubuntu
+sudo usermod -aG adm $USER
 ```
 
 clone the git repo on the ansible:
@@ -27,3 +27,12 @@ clone the git repo on the ansible:
 git clone https://github.com/IDEA4RC/microk8s-playbook
 ```
 
+enter the cloned repo:
+```
+cd microk8s-playbook/
+```
+
+Execute the playbook on the remote host. If you're specifying a single host from the cli, don't forget the comma at the end of the hostname:
+```
+ansible-playbook -vv  -i user@hostname, microk8s_setup.yml
+```

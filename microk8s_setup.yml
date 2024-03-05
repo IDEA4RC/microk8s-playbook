@@ -71,8 +71,8 @@
      #ansible-playbook -vv  -i ./inventory microk8s_setup.yml --extra-vars "lb_vip_address=172.28.128.74"
      #this playbook assumes we're going to need one VIP only
     - name: enable MetalLB
-       shell:
-         "microk8s.enable metallb:{{ lb_vip_address | default(ansible_default_ipv4.address) }}/32"
+      shell:
+        "microk8s.enable metallb:{{ lb_vip_address | default(ansible_default_ipv4.address) }}/32"
  
     - name: install Docker
       package:
@@ -93,6 +93,12 @@
       package:
         name:
           - python3
+        state: present
+ 
+    - name: install Python Virtualenv
+      package:
+        name:
+          - virtualenv
         state: present
  
     - name: install Vantage6 in a virtualenv
