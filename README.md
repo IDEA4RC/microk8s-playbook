@@ -19,12 +19,12 @@ generate new ssh keys if not yet available:
 ssh-keygen
 ```
 
-copy the generated keys on the remote hosts:
+copy the generated keys on the node being provisioned:
 ```
 ssh-copy-id user@hostname
 ```
 
-add remote user to sudoers. This user should be able to get elevated privileges passwordlessly. Once that's done simply disconnect:
+...And then login and add the remote user to sudoers. This user should be able to get elevated privileges passwordlessly. Once that's done simply disconnect:
 ```
 sudo usermod -aG adm $USER
 ```
