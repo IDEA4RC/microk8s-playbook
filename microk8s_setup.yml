@@ -19,7 +19,7 @@
     - name: Add current user to the microk8s group
       user:
         name: "{{ ansible_facts['env']['SUDO_USER'] }}"
-        group: microk8s
+        groups: microk8s
         append: yes
 
     - name: Reset connection so that group changes are in effect
@@ -83,7 +83,7 @@
     - name: Add current user to the docker group
       user:
         name: "{{ ansible_facts['env']['SUDO_USER'] }}"
-        group: docker
+        groups: docker
         append: yes
 
     - name: Reset connection so that group changes are in effect
