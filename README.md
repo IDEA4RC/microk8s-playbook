@@ -6,7 +6,6 @@ You will need a provisioner node with ansible that will connect to the provision
 This playbook will do the following:
 - install microk8s
 - enable several IDEA4RC capsule dependencies like istio, helm, metalLB, prometheus, kiali
-- Install an unconfigured Vantage6 node in its own virtualenv, together with Docker
 
 ## Installation steps
 install ansible on the provisioner node:
@@ -52,4 +51,4 @@ ansible-playbook -i user@hostname, microk8s_setup.yml
 
 That's all! From here on, the next steps will the be:
 - deploy your IDEA4RC capsule (see: https://github.com/IDEA4RC/idea4rc-helm-capsule) 
-- configure your Vantage6 node (see: https://docs.vantage6.ai/en/main/node/configure.html)
+- setup your Vantage6 node (see: https://github.com/IDEA4RC/v6-idea4rc-installation-scripts)
