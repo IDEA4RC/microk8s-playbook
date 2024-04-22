@@ -94,14 +94,14 @@
         name:
           - python3
         state: present
- 
-    - name: install Python Virtualenv
-      package:
-        name:
-          - virtualenv
-        state: present
- 
-    - name: install Vantage6 in a virtualenv
-      ansible.builtin.pip:
-        name: vantage6
-        virtualenv: /opt/vantage6
+# 
+#    - name: install Python Virtualenv
+#      package:
+#        name:
+#          - virtualenv
+#        state: present
+# 
+#    - name: install Vantage6 in a virtualenv
+#      ansible.builtin.pip:
+#        name: vantage6
+#        virtualenv: /opt/vantage6
