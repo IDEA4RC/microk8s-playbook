@@ -49,6 +49,10 @@
       shell:
         "microk8s.enable community"
 
+    - name: enable microk8s hostpath storage provisioner
+      shell:
+        "microk8s.enable hostpath-storage"
+
     - name: enable istio
       shell:
         "microk8s.enable istio"
