@@ -78,26 +78,26 @@
       shell:
         "microk8s.enable metallb:{{ lb_vip_address | default(ansible_default_ipv4.address) }}/32"
  
-    - name: install Docker
-      package:
-        name:
-          - docker.io
-        state: present
+#    - name: install Docker
+#      package:
+#        name:
+#          - docker.io
+#        state: present
 
-    - name: Add current user to the docker group
-      user:
-        name: "{{ ansible_facts['env']['SUDO_USER'] }}"
-        groups: docker
-        append: yes
+ #   - name: Add current user to the docker group
+ #     user:
+ #       name: "{{ ansible_facts['env']['SUDO_USER'] }}"
+ #       groups: docker
+ #       append: yes
 
-    - name: Reset connection so that group changes are in effect
-      meta: reset_connection
+ #   - name: Reset connection so that group changes are in effect
+ #     meta: reset_connection
 
-    - name: install Python3
-      package:
-        name:
-          - python3
-        state: present
+#    - name: install Python3
+#      package:
+#        name:
+#          - python3
+#        state: present
 # 
 #    - name: install Python Virtualenv
 #      package:
