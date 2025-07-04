@@ -55,6 +55,4 @@ ansible-playbook -i user@hostname, microk8s_setup.yml
 > ansible-playbook -i user@hostname, --extra-vars "lb_vip_address=MY_PUBLIC_IP" microk8s_setup.yml
 > ```
 
-That's all! From here on, the next steps will the be:
-- deploy your IDEA4RC capsule (see: https://github.com/IDEA4RC/idea4rc-helm-capsule) 
-- setup your Vantage6 node (see: https://github.com/IDEA4RC/v6-idea4rc-installation-scripts)
+That's all! From here on, the next steps will the be the deployment of your IDEA4RC capsule (see: https://github.com/IDEA4RC/idea4rc-helm-capsule).
