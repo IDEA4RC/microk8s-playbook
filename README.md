@@ -23,10 +23,16 @@ copy the generated keys on the node being provisioned:
 ssh-copy-id user@hostname
 ```
 
-...And then login and add the remote user to sudoers. This user should be able to get elevated privileges passwordlessly. Once that's done simply disconnect:
+...And then login and add the remote user to sudoers. Please check the correct group for your Linux distribution. This user must  have sudo privileges passwordlessly. Once that's done simply disconnect:
 ```
 sudo usermod -aG adm $USER
 ```
+
+> [!TIP]
+> If Ansible is still unable to escalate privileges passwordlessly, you can add the following line at the end of your sudoers file, replacing << my_user >> with the desired user name:
+> ```
+> << my_user >>  ALL=(ALL:ALL) NOPASSWD: ALL
+> ```
 
 clone the git repo on the provisioner node:
 ```
